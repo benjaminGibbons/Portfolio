@@ -1,0 +1,139 @@
+<CompuCell3D Revision="20160512" Version="3.7.5">
+   
+   <Potts>
+      
+      <!-- Basic properties of CPM (GGH) algorithm -->
+      <Dimensions x="100" y="100" z="1"/>
+      <Steps>1000</Steps>
+      <Temperature>5.0</Temperature>
+      <NeighborOrder>1</NeighborOrder>
+      <Boundary_x>NoFlux</Boundary_x>
+      <Boundary_x>Periodic</Boundary_x>
+      <NeighborOrder>1</NeighborOrder>
+   </Potts>
+   
+   <Plugin Name="CellType">
+      
+      <!-- Listing all cell types in the simulation -->
+      <CellType TypeId="0" TypeName="Medium"/>
+      <CellType TypeId="1" TypeName="phloem"/>
+      <CellType TypeId="2" TypeName="cortex"/>
+      <CellType TypeId="3" TypeName="rootHair"/>
+      <CellType TypeId="4" TypeName="thread"/>
+      <CellType TypeId="5" TypeName="infected"/>
+      <CellType TypeId="6" TypeName="rootHairInf"/>
+   </Plugin>
+   
+   <Plugin Name="CenterOfMass">
+      
+      <!-- Module tracking center of mass of each cell -->
+   </Plugin>
+   
+   <Plugin Name="NeighborTracker">
+      
+      <!-- Module tracking neighboring cells of each cell -->
+   </Plugin>
+   
+   <Plugin Name="Contact">
+      <!-- Specification of adhesion energies -->
+      <Energy Type1="Medium" Type2="Medium">10.0</Energy>
+      <Energy Type1="Medium" Type2="phloem">10.0</Energy>
+      <Energy Type1="Medium" Type2="cortex">10.0</Energy>
+      <Energy Type1="Medium" Type2="rootHair">10.0</Energy>
+      <Energy Type1="Medium" Type2="rootHairInf">10.0</Energy>
+      <Energy Type1="Medium" Type2="thread">10.0</Energy>
+      <Energy Type1="Medium" Type2="infected">10.0</Energy>
+      <Energy Type1="phloem" Type2="phloem">10.0</Energy>
+      <Energy Type1="phloem" Type2="cortex">10.0</Energy>
+      <Energy Type1="phloem" Type2="rootHair">10.0</Energy>
+      <Energy Type1="phloem" Type2="rootHairInf">10.0</Energy>
+      <Energy Type1="phloem" Type2="thread">10.0</Energy>
+      <Energy Type1="phloem" Type2="infected">10.0</Energy>
+      <Energy Type1="cortex" Type2="cortex">10.0</Energy>
+      <Energy Type1="cortex" Type2="rootHair">10.0</Energy>
+      <Energy Type1="cortex" Type2="rootHairInf">10.0</Energy>
+      <Energy Type1="cortex" Type2="thread">5.0</Energy>
+      <Energy Type1="cortex" Type2="infected">10.0</Energy>
+      <Energy Type1="rootHair" Type2="rootHair">10.0</Energy>
+      <Energy Type1="rootHair" Type2="rootHairInf">10.0</Energy>
+      <Energy Type1="rootHair" Type2="thread">10.0</Energy>
+      <Energy Type1="rootHair" Type2="infected">10.0</Energy>
+      <Energy Type1="rootHairInf" Type2="rootHairInf">10.0</Energy>
+      <Energy Type1="rootHairInf" Type2="thread">10.0</Energy>
+      <Energy Type1="rootHairInf" Type2="infected">10.0</Energy>
+      <Energy Type1="thread" Type2="thread">10.0</Energy>
+      <Energy Type1="thread" Type2="infected">8.0</Energy>
+      <Energy Type1="infected" Type2="infected">10.0</Energy>
+      <NeighborOrder>1</NeighborOrder>
+   </Plugin>
+   
+   <Plugin Name="ContactInternal">
+      <!-- Specification of internal adhesion energies -->
+      <Energy Type1="phloem" Type2="phloem">10.0</Energy>
+      <Energy Type1="phloem" Type2="cortex">10.0</Energy>
+      <Energy Type1="phloem" Type2="rootHair">10.0</Energy>
+      <Energy Type1="phloem" Type2="rootHairInf">10.0</Energy>
+      <Energy Type1="phloem" Type2="thread">10.0</Energy>
+      <Energy Type1="phloem" Type2="infected">10.0</Energy>
+      <Energy Type1="cortex" Type2="cortex">10.0</Energy>
+      <Energy Type1="cortex" Type2="rootHair">10.0</Energy>
+      <Energy Type1="cortex" Type2="rootHairInf">10.0</Energy>
+      <Energy Type1="cortex" Type2="thread">10.0</Energy>
+      <Energy Type1="cortex" Type2="infected">10.0</Energy>
+      <Energy Type1="rootHair" Type2="rootHair">10.0</Energy>
+      <Energy Type1="rootHair" Type2="rootHairInf">10.0</Energy>
+      <Energy Type1="rootHair" Type2="thread">10.0</Energy>
+      <Energy Type1="rootHair" Type2="infected">10.0</Energy>
+      <Energy Type1="rootHairInf" Type2="rootHairInf">10.0</Energy>
+      <Energy Type1="rootHairInf" Type2="thread">-1000.0</Energy>
+      <Energy Type1="rootHairInf" Type2="infected">10.0</Energy>
+      <Energy Type1="thread" Type2="thread">10.0</Energy>
+      <Energy Type1="thread" Type2="infected">10.0</Energy>
+      <Energy Type1="infected" Type2="infected">10.0</Energy>
+      <NeighborOrder>1</NeighborOrder>
+   </Plugin>
+   
+   <Plugin Name="ConnectivityGlobal">
+      
+      <!-- Connectivity constraint applied to each cell. Energy penalty specifies how strong the constraint is. Penalty is specified for each cell type individually  -->
+      <!-- Use Python scripting to setup penalty (connectivity strength) for each cell -->
+      <!-- e.g. self.connectivityGlobalPlugin.setConnectivityStrength(cell,20000000) #cell, connectivity strength -->
+      <!-- This constraint works in 2D and 3D on all type of lattices. It might be slowdown your simulation. For faster option - 2D and square lattice you may use Connectivity or ConnectivityLocalFlex -->
+      <!-- To speed up simulation comment out unnecessary constraints for types which don't need the constraint -->
+   </Plugin>
+   
+   <Plugin Name="Volume">
+    <TargetVolume>25</TargetVolume>
+    <LambdaVolume>2.0</LambdaVolume>
+   <VolumeEnergyExpression>
+        <Expression>LambdaVolume*(Volume-Vtarget)^4</Expression>
+   </VolumeEnergyExpression>
+   </Plugin> 
+   
+   <Plugin Name="LengthConstraint"/>
+   
+   
+   
+   <Steppable Type="DiffusionSolverFE">
+     <DiffusionField>
+        <DiffusionData>
+            <FieldName>NH3</FieldName>
+            <DiffusionConstant>0.10</DiffusionConstant>
+            <DecayConstant>0.020</DecayConstant>
+            <DiffusionCoefficient CellType="cortex">0.0</DiffusionCoefficient>
+            <DiffusionCoefficient CellType="phloem">0.0</DiffusionCoefficient>
+            <DiffusionCoefficient CellType="rootHair">0.0</DiffusionCoefficient>
+        </DiffusionData>
+	<SecretionData>
+            <Secretion Type="infected">200</Secretion>
+        </SecretionData>
+    </DiffusionField>
+   </Steppable>
+   
+   
+   <Steppable Type="PIFInitializer">
+      
+      <!-- Initial layout of cells using PIFF file. Piff files can be generated using PIFGEnerator -->
+      <PIFName>Simulation/Root_Nodulation_2D.txt</PIFName>
+   </Steppable>
+</CompuCell3D>

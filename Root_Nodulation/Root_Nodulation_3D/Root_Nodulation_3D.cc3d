@@ -1,0 +1,6 @@
+<Simulation version="3.6.2">
+   <XMLScript Type="XMLScript">Simulation/Root_Nodulation_3D.xml</XMLScript>
+   <PythonScript Type="PythonScript">Simulation/Root_Nodulation_3D.py</PythonScript>
+   <Resource Type="Python">Simulation/Root_Nodulation_3DSteppables.py</Resource>
+   <PIFFile>Simulation/Root_Nodulation_3D.txt</PIFFile>
+</Simulation>
